@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MBR11</string>
+    <string name="login">Login</string>
+    <string name="action_settings">Settings</string>
+    <string name="senha">Senha</string>
+    <string name="entrar">Entrar</string>
+    <string name="km">Km Atual</string>
+    <string name="placa">Placa</string>
+    <string name="nome">Usuario</string>
+    <string name="send">Enviar</string>
+    <string name="destino">Destino</string>
+    <string name="Blank"> </string>
+    <string name="drawer_open">Slider Menu Opened</string>
+    <string name="drawer_closed">Slider Menu Closed</string>
+    <string name="camera">Camera</string>
+    <string name="edit">Edit</string>
+    <string name="add">Nova Km</string>
+
+    <string-array name="nav_drawer_items">
+        <item> Quilometragem</item>
+        <item> Abastecimento</item>
+    </string-array>
+
+    <array name ="nav_drawer_icons">
+        <item>@drawable/mbr</item>
+        <item>@drawable/mbr144</item> //mudar icone
+    </array>
+
+<string name="desc_list_item_icon"> Item Icon </string>
+
+</resources>

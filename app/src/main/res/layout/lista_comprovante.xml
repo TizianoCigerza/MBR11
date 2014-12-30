@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lista_menu_drawer_comprovanteGeral"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/lista_menu_slider_comprovanteGeral"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        style="?android:attr/button"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:id="@+id/novo_comprovante"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="40dp"
+        android:layout_marginRight="50dp"
+        android:elevation="6dp"
+        android:background="@drawable/round_button_geral"
+        android:src="@drawable/ic_action_new"/>
+
+</FrameLayout>
+
+    <ListView android:id="@+id/lista_menu_left_drawer_comprovanteGeral"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:background="#fffff9ec"/>
+    </android.support.v4.widget.DrawerLayout>

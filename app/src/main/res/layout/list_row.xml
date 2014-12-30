@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="29dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="#000"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/textView6"
+        android:layout_toStartOf="@+id/textView6"
+        android:layout_gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="57dp"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:layout_toEndOf="@+id/textView6"
+        android:layout_below="@+id/text1"
+        android:layout_toRightOf="@+id/textView6"
+        android:layout_gravity="center_vertical" />
+
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text=" "
+        android:id="@+id/textView6"
+        android:layout_weight="0.37"
+        android:layout_below="@+id/text1"
+        android:layout_alignRight="@+id/text3"
+        android:layout_alignEnd="@+id/text3"
+        android:layout_gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/text3"
+        android:layout_width="57dp"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:layout_toEndOf="@+id/text1"
+        android:layout_above="@+id/textView6"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/text4"
+        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:text=""
+        android:layout_toEndOf="@+id/text3"
+        android:layout_weight="0.00"
+        android:layout_gravity="center_vertical" />
+
+    <ImageButton
+        android:layout_width="41dp"
+        android:layout_height="35dp"
+        android:id="@+id/deleteButton"
+        android:layout_gravity="center_vertical" />
+
+    <ImageButton
+        android:layout_width="41dp"
+        android:layout_height="35dp"
+        android:id="@+id/editButton"
+        android:layout_gravity="center_vertical"/>
+
+</LinearLayout>

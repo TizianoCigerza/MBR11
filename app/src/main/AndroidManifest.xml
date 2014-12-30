@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="mbrapp.tiziano.mbr" >
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA"
+        android:required="false"> </uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-feature android:name="android.hardware.camera"
+        android:required="false">
+    </uses-feature>
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/mbr144"
+        android:label="@string/app_name"
+        android:theme="@style/AppOldTheme">
+        <activity
+            android:name="login_control.LoginScreen"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ListaKm"
+            android:label="Lista Quilometragem"
+            android:finishOnTaskLaunch="true">
+        </activity>
+
+        <activity android:name=".NovaKm"
+            android:finishOnTaskLaunch="true">
+
+        </activity>
+
+
+        <activity android:name="comprovantes.ComprovanteGeral"
+            android:finishOnTaskLaunch="true">
+
+        </activity>
+
+        <activity
+            android:name="comprovantes.ComprovanteAbastecimento"
+            android:finishOnTaskLaunch="true">
+        </activity>
+
+        <activity
+            android:name="veiculos.Novo_veiculo"
+            android:finishOnTaskLaunch="true">
+        </activity>
+        <activity android:name="login_control.Tela_inicial"
+            android:finishOnTaskLaunch="true">
+        </activity>
+
+        <activity
+            android:name="comprovantes.ListaGeral"
+            android:finishOnTaskLaunch="true">
+            </activity>
+        <activity android:name="comprovantes.ListaAbast"
+            android:finishOnTaskLaunch="true">
+        </activity>
+        
+        <activity android:name="veiculos.ListaVeiculo"
+            android:finishOnTaskLaunch="true">
+        </activity>
+
+
+    </application>
+
+</manifest>
