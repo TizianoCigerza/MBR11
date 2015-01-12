@@ -49,18 +49,16 @@ public class VisualizarVeiculo extends Activity {
         TextView placaText = (TextView) findViewById(R.id.viewVeiculoPlaca);
         TextView dataText = (TextView) findViewById(R.id.viewVeiculoData);
 
-        System.out.println(placaText.getTextSize());
         modelo = veiculo.getModelo();
         marca = veiculo.getMarca();
         placa = veiculo.getPlaca();
         data = veiculo.getTroca_oleo();
 
-        for(int i=0;i<this.veiculos.size();i++) {
             modeloText.setText(modelo);
             marcaText.setText(marca);
             placaText.setText(placa);
             dataText.setText(data);
-        }
+
         modeloText.setText(veiculo.getModelo());
         marcaText.setText(veiculo.getMarca());
         dataText.setText(veiculo.getTroca_oleo());
@@ -110,7 +108,7 @@ public class VisualizarVeiculo extends Activity {
             int position = mIntent.getIntExtra("position", 0);
             db = new DatabaseManager(this);
             context = this.getApplicationContext();
-            this.veiculos = db.resultVeiculo("veiculo");
+            this.veiculos = db.resultVeiculo("veiculos");
             veiculo = veiculos.get(position);
             formatItem(veiculo);
         }catch(Exception e){

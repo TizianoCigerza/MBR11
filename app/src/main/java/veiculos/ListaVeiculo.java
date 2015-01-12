@@ -60,7 +60,7 @@ public class ListaVeiculo extends Activity {
         ListView listView = (ListView) findViewById(R.id.listaVeiculo);
         setTitle("Listar Veiculos");
         List<String> listaFormat;
-        listaVeiculo = db.resultVeiculo("veiculo");
+        listaVeiculo = db.resultVeiculo("veiculos");
         listaFormat = formatItem(listaVeiculo);
         try{
             ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listaFormat);

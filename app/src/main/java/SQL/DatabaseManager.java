@@ -18,22 +18,15 @@ public class DatabaseManager extends SQLiteOpenHelper{
     public DatabaseManager(Context context) {
             super(context, database_name, null, database_version);
     }
-    String tableName;
-    int position;
-    List<Quilometragem> listaKm = new ArrayList<Quilometragem>();
+
     SQLiteDatabase db = this.getWritableDatabase();
     SQLiteDatabase dbr = this.getReadableDatabase();
-    List<String> lista = new ArrayList<String>();
-    int i;
-
 
     private static final String database_name = "mbr";
 
     private static final int database_version = 1;
 
     private final String create_table_abastecimento = "CREATE TABLE IF NOT EXISTS abastecimento (_id INTEGER PRIMARY KEY AUTOINCREMENT, estabelecimento TEXT, km_atual INT, litros NUMERIC, valor NUMERIC);";
-
-    private final String create_table_veiculo = "CREATE TABLE IF NOT EXISTS veiculo (_id INTEGER PRIMARY KEY AUTOINCREMENT, placa TEXT, modelo TEXT, marca TEXT, troca_oleo TEXT);";
 
     private final String create_table_comprovante_geral = "CREATE TABLE IF NOT EXISTS comprovante_geral (_id INTEGER PRIMARY KEY AUTOINCREMENT, estabelecimento TEXT, valor REAL, date TEXT);";
 
@@ -43,22 +36,21 @@ public class DatabaseManager extends SQLiteOpenHelper{
 
     private final String create_table_km = "CREATE TABLE IF NOT EXISTS km (_id INTEGER PRIMARY KEY AUTOINCREMENT, km_atual INT, destino TEXT, placa TEXT, nome TEXT, veiculo TEXT);";
 
-    private final String create_table_veiculos = "CREATE TABLE IF NOT EXISTS veiculo (_id INTEGER PRIMARY KEY AUTOINCREMENT, placa TEXT, modelo TEXT, marca TEXT, troca_oleo TEXT);";
+    private final String create_table_veiculos = "CREATE TABLE IF NOT EXISTS veiculos (_id INTEGER PRIMARY KEY AUTOINCREMENT, placa TEXT, modelo TEXT, marca TEXT, troca_oleo TEXT);";
 
     private final String get_result="SELECT * FROM ";
 
     private final String deleteKm = "DELETE FROM km WHERE ROWID = ";
 
-    private final String deleteVeiculo = "DELETE FROM veiculo WHERE ROWID = ";
+    private final String deleteVeiculo = "DELETE FROM veiculos WHERE ROWID = ";
 
     private final String deleteTable = "DELETE FROM ";
 
-
-
+    private final String dropTable = "DROP TABLE ";
 
     public void createTables(){
         db.execSQL(create_table_abastecimento);
-        db.execSQL(create_table_veiculo);
+        db.execSQL(create_table_veiculos);
         db.execSQL(create_table_comprovante_geral);
         db.execSQL(create_table_km);
         db.execSQL(create_table_estabelecimento);
@@ -68,12 +60,17 @@ public class DatabaseManager extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         isEmpty("km");
-        isEmpty("veiculo");
+        isEmpty("veiculos");
+        resetAutoIncrement("veiculos");
     }
 
 
+    public void dropTable(String tableName){
+        db.execSQL(dropTable.concat(tableName));
+    }
+
     public void updateVeiculo(Veiculo veiculo){
-        final String updateVeiculo = "UPDATE veiculo SET placa = "+veiculo.getPlaca()+", modelo = "+veiculo.getModelo()+", marca = "+veiculo.getMarca()+", troca_oleo = "+ veiculo.getTroca_oleo()+" WHERE _id = "+veiculo.getId()+";";
+        final String updateVeiculo = "UPDATE veiculos SET placa = "+veiculo.getPlaca()+", modelo = "+veiculo.getModelo()+", marca = "+veiculo.getMarca()+", troca_oleo = "+ veiculo.getTroca_oleo()+" WHERE _id = "+veiculo.getId()+";";
         db.execSQL(updateVeiculo);
     }
 
@@ -88,29 +85,25 @@ public class DatabaseManager extends SQLiteOpenHelper{
     }
 
     public void insertVeiculo(Veiculo veiculo){
-        final String insertVeiculo="INSERT INTO veiculo (placa, modelo, marca, troca_oleo) values ('"+veiculo.getPlaca()+"','"+veiculo.getModelo()+"','"+veiculo.getMarca()+"','"+veiculo.getTroca_oleo()+"');";
+        final String insertVeiculo="INSERT INTO veiculos (placa, modelo, marca, troca_oleo) values ('"+veiculo.getPlaca()+"','"+veiculo.getModelo()+"','"+veiculo.getMarca()+"','"+veiculo.getTroca_oleo()+"');";
         db.execSQL(insertVeiculo);
     }
 
 
-    public void deleteTable(String tableName){
+    public void deleteTableEntries(String tableName){
         db.execSQL(deleteTable.concat(tableName).concat(";"));
         resetAutoIncrement(tableName);
     }
 
-
-
     public String getPlaca(Quilometragem km){
         String veiculo = km.getVeiculo();
-        Cursor cursor1 = dbr.rawQuery("SELECT * FROM veiculo WHERE modelo = '"+veiculo+"' ;",null);
+        Cursor cursor1 = dbr.rawQuery("SELECT * FROM veiculos WHERE modelo = '"+veiculo+"' ;",null);
         cursor1.moveToFirst();
-        Cursor cursor = db.rawQuery("SELECT placa FROM veiculo WHERE ROWID = "+ cursor1.getInt(cursor1.getColumnIndex("_id")),null);
+        Cursor cursor = db.rawQuery("SELECT placa FROM veiculos WHERE ROWID = "+ cursor1.getInt(cursor1.getColumnIndex("_id")),null);
         cursor.moveToFirst();
         final String placa = cursor.getString(cursor.getColumnIndex("placa"));
         return placa;
     }
-
-
 
     public int getKmPosition(Quilometragem km){
         int position = km.getId();
@@ -118,19 +111,25 @@ public class DatabaseManager extends SQLiteOpenHelper{
     }
 
     public int getVeiculoPosition(Veiculo veiculo){
-        int position = veiculo.getId();
+        Cursor cursor = dbr.rawQuery("SELECT * FROM veiculos WHERE _id = "+veiculo.getId(),null);
+        int position = cursor.getInt(0);
         return position;
     }
 
-    public void deleteVeiculo(Veiculo veiculo){
-        //Cursor cursor = db.rawQuery("SELECT ROWID FROM veiculo", null);//CHECAR POSITION PARA DELETE
-        //System.out.println(cursor.getInt(cursor.getColumnIndex("_id")));
-        String pos = String.valueOf(getVeiculoPosition(veiculo));
-        int qtdVeiculo = getCount("veiculo");
+    public void deleteVeiculo(Veiculo veiculo){//checar delete, 90% working
+
+        int qtdVeiculo = getCount("veiculos");
+        String pos = String.valueOf(veiculo.getId()+1);
+        System.out.println(veiculo.getId());
+        if(qtdVeiculo == 1){
+            resetAutoIncrement("veiculos");
+        }
         if(qtdVeiculo == Integer.parseInt(pos)){
+            System.out.println(pos);
             db.execSQL(deleteVeiculo.concat(pos).concat(";"));
-            resetAutoIncrement("veiculo");
+            resetAutoIncrement("veiculos");
         }else{
+            System.out.println(pos);
             db.execSQL(deleteVeiculo.concat(pos).concat(";"));
         }
     }
@@ -146,9 +145,8 @@ public class DatabaseManager extends SQLiteOpenHelper{
         }
     }
 
-
     public int getCount(String tableName){
-        Cursor cursor = dbr.rawQuery("SELECT * FROM "+tableName+";", null);
+        Cursor cursor = dbr.rawQuery("SELECT * FROM " + tableName + ";", null);
         return cursor.getCount();
     }
 
@@ -159,17 +157,15 @@ public class DatabaseManager extends SQLiteOpenHelper{
         return position;
     }
 
-
     public int getIdVeiculo(){
         int id=0;
-        Cursor cursor = dbr.rawQuery("SELECT ROWID FROM veiculo;", null);
+        Cursor cursor = dbr.rawQuery("SELECT ROWID FROM veiculos;", null);
         cursor.moveToFirst();
         do {
             id = cursor.getPosition();
         }while(cursor.moveToNext());
         return id;
     }
-
 
     public List<String> getAllLabels(String tableName){
         List<String> list = new ArrayList<String>();
@@ -179,7 +175,7 @@ public class DatabaseManager extends SQLiteOpenHelper{
 
         if (cursor.moveToFirst()) {
             do {
-                list.add(cursor.getString(1));
+                list.add(cursor.getString(2));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -207,16 +203,13 @@ public class DatabaseManager extends SQLiteOpenHelper{
         if(cursor != null && cursor.moveToFirst()) {
             do {
                 Veiculo veiculo = new Veiculo();
-                veiculo.setPlaca(cursor.getString(0));
+                veiculo.setId(cursor.getInt(0));
+                veiculo.setPlaca(cursor.getString(1));
                 veiculo.setModelo(cursor.getString(2));
-                veiculo.setMarca(cursor.getString(1));
-                veiculo.setTroca_oleo(cursor.getString(3));
-                System.out.println(cursor.getString(0));
-                System.out.println(cursor.getString(2));
-                System.out.println(cursor.getString(1));
-                System.out.println(cursor.getString(3));
+                veiculo.setMarca(cursor.getString(3));
+                veiculo.setTroca_oleo(cursor.getString(4));
+                System.out.println("result " + cursor.getPosition() + " id: " + cursor.getInt(0));
                 lista.add(veiculo);
-                System.out.println(cursor.getColumnCount());
             } while (cursor.moveToNext());
         }
 
@@ -236,7 +229,6 @@ public class DatabaseManager extends SQLiteOpenHelper{
                 km.setDestino(cursor.getString(2));
                 km.setNome(cursor.getString(4));
                 km.setKm_atual(cursor.getInt(1));
-                System.out.println(cursor.getColumnCount());
                 list.add(km);
             } while (cursor.moveToNext());
         }

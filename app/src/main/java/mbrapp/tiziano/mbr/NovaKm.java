@@ -136,8 +136,8 @@ public class NovaKm extends Activity {
     public void loadSpinnerData(Spinner combobox) {
 
         DatabaseManager db = new DatabaseManager(getApplicationContext());
-        List<String> labels = db.getAllLabels("veiculo");
-        if (db.getAllLabels("veiculo").isEmpty()) {
+        List<String> labels = db.getAllLabels("veiculos");
+        if (db.getAllLabels("veiculos").isEmpty()) {
             Toast.makeText(NovaKm.this, "Não há veículos cadastrados, \ncadastre um veiculo para continuar", Toast.LENGTH_LONG).show();
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {

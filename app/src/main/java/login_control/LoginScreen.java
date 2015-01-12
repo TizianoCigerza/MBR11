@@ -24,8 +24,8 @@ public class LoginScreen extends Activity{
         setContentView(R.layout.activity_login_screen);
         super.onCreate(savedInstanceState);
         db = new DatabaseManager(this);
-        //db.deleteTable("km");
-        //db.deleteTable("veiculo");
+        //db.dropTable("km");
+        //db.dropTable("veiculos");
         db.createTables();
         final Intent i = new Intent(this, ListaKm.class);
         final AESenc a = new AESenc();

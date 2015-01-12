@@ -40,6 +40,7 @@ public class Novo_veiculo extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.novo_veiculo);
+        setTitle("Novo veículo");
         db = new DatabaseManager(this);
         final EditText modelo = (EditText) findViewById(R.id.modeloEdit);
         final EditText marca = (EditText) findViewById(R.id.marcaEdit);
