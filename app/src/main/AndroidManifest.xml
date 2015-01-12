@@ -64,6 +64,21 @@
             android:finishOnTaskLaunch="true">
         </activity>
 
+        <activity android:name =".VisualizarKm"
+            android:finishOnTaskLaunch="true">
+        </activity>
+
+        <activity android:name=".EditKm"
+            android:finishOnTaskLaunch="true">
+        </activity>
+
+        <activity android:name="veiculos.EditVeiculo"
+            android:finishOnTaskLaunch="true">
+        </activity>
+
+        <activity android:name="veiculos.VisualizarVeiculo"
+            android:finishOnTaskLaunch="true">
+        </activity>
 
     </application>
 

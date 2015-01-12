@@ -14,6 +14,7 @@ import SQL.DatabaseManager;
 import login_control.AESenc;
 import mbrapp.tiziano.mbr.ListaKm;
 import mbrapp.tiziano.mbr.R;
+import tables.Quilometragem;
 
 public class LoginScreen extends Activity{
     private DatabaseManager db;
@@ -26,7 +27,7 @@ public class LoginScreen extends Activity{
         //db.deleteTable("km");
         //db.deleteTable("veiculo");
         db.createTables();
-        final Intent i = new Intent(this, Tela_inicial.class);
+        final Intent i = new Intent(this, ListaKm.class);
         final AESenc a = new AESenc();
         final EditText editLogin = (EditText) findViewById(R.id.loginEdit);
         final EditText editPass = (EditText) findViewById(R.id.senhaEdit);

@@ -76,14 +76,15 @@ public class NovaKm extends Activity {
                 km.setKm_atual(Integer.parseInt(kmTexto));//km atual para o banco
 
                 km.setVeiculo(combobox.getSelectedItem().toString());
-                km.setId(db.setIdKm());
-                km.setPlaca(db.getPlaca(km.getId()));
+                km.setId(db.getId());
+                km.setPlaca(db.getPlaca(km));
 
                 try{
                     db.insertKm(km);
                     editDestino.setText("");
                     editNome.setText("");
                     editKm.setText("");
+                    Toast.makeText(NovaKm.this, "Quilometragem adicionada.", Toast.LENGTH_LONG).show();
                     //KmFunctions f = new KmFunctions();
                     // /f.formatPost(nomeTexto, placaTexto, destinoTexto, kmTexto, textView);
                 } catch (Exception e) {
@@ -135,8 +136,8 @@ public class NovaKm extends Activity {
     public void loadSpinnerData(Spinner combobox) {
 
         DatabaseManager db = new DatabaseManager(getApplicationContext());
-        List<String> labels = db.getAllLabels("veiculos");
-        if (db.getAllLabels("veiculos").isEmpty()) {
+        List<String> labels = db.getAllLabels("veiculo");
+        if (db.getAllLabels("veiculo").isEmpty()) {
             Toast.makeText(NovaKm.this, "Não há veículos cadastrados, \ncadastre um veiculo para continuar", Toast.LENGTH_LONG).show();
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {

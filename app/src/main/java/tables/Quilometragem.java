@@ -60,6 +60,11 @@ public class Quilometragem {
         this.destino = destino;
     }
 
+    public String getKm(int km_atual){
+        String kmTxt = String.valueOf(km_atual);
+        return kmTxt;
+    }
+
     @Override
     public String toString() {
         return ("placa:"+this.getPlaca()+

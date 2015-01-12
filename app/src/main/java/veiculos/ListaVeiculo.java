@@ -8,19 +8,21 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import SQL.QuilometragemCustomAdapter;
 import SQL.DatabaseManager;
-import SQL.VeiculoCustomAdapter;
 import comprovantes.ListaAbast;
 import comprovantes.ListaGeral;
 import login_control.Tela_inicial;
 import mbrapp.tiziano.mbr.ListaKm;
 import tables.Quilometragem;
 import mbrapp.tiziano.mbr.R;
+import tables.Veiculo;
+
 /**
  * Created by Tiziano on 24/11/2014.
  */
@@ -31,6 +33,24 @@ public class ListaVeiculo extends Activity {
     ArrayAdapter<String> drawerAdapter;
     DatabaseManager db;
     Quilometragem km;
+    List<Veiculo> listaVeiculo;
+
+
+    public List<String> formatItem(List<Veiculo> lista){
+        List<String> item = new ArrayList<String>();
+        String marca;
+        String modelo;
+        for(int i=0;i<lista.size();i++) {
+            marca = lista.get(i).getMarca();
+            modelo = lista.get(i).getModelo();
+            System.out.println(marca);
+            System.out.println(modelo);
+            item.add("\nMarca:  " + marca + "  Modelo:  " + modelo.concat("\n"));
+        }
+
+        return item;
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,10 +59,21 @@ public class ListaVeiculo extends Activity {
         db = new DatabaseManager(this);
         ListView listView = (ListView) findViewById(R.id.listaVeiculo);
         setTitle("Listar Veiculos");
-
+        List<String> listaFormat;
+        listaVeiculo = db.resultVeiculo("veiculo");
+        listaFormat = formatItem(listaVeiculo);
         try{
-            VeiculoCustomAdapter adapter = new VeiculoCustomAdapter(this.getApplicationContext() , db.resultVeiculo("veiculo"));
+            ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listaFormat);
             listView.setAdapter(adapter);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent i = new Intent(ListaVeiculo.this, VisualizarVeiculo.class);
+                    i.putExtra("position", position);
+                    startActivity(i);
+                }
+            });
         }catch(Exception e){
             System.out.println(e.getMessage());
         }

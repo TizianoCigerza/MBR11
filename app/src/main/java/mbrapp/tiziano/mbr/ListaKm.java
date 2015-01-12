@@ -8,11 +8,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import SQL.QuilometragemCustomAdapter;
 import SQL.DatabaseManager;
 import comprovantes.ListaAbast;
 import comprovantes.ListaGeral;
@@ -24,26 +25,56 @@ import veiculos.ListaVeiculo;
  * Created by Tiziano on 24/11/2014.
  */
 public class ListaKm extends Activity {
-    List<String> lista;
+    List<Quilometragem> lista;
     DrawerLayout dLayout;
     ListView dList2;
     ArrayAdapter<String> drawerAdapter;
     DatabaseManager db;
-    Quilometragem km;
-    List<Quilometragem> listaKm;
+
+    public List<String> formatItem(List<Quilometragem> lista){
+        List<String> item = new ArrayList<String>();
+        String veiculo;
+        String destino;
+        for(int i=0;i<lista.size();i++) {
+            veiculo = lista.get(i).getVeiculo();
+            destino = lista.get(i).getDestino();
+            if(destino.equals("Balneario Camboriu")){
+                destino = "B.Camboriu";
+            }else if(destino.equals("Balneario camboriu")){
+                destino = "B.Camboriu";
+            }else if(destino.equals("Antonio Carlos")){
+                destino = "A.Carlos";
+            }else if( destino.equals("Antonio carlos")){
+                destino = "A.Carlos";
+            }
+            item.add("\nVeiculo:  " + veiculo + ("  Destino:  ") + destino.concat("\n"));
+        }
+
+        return item;
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lista_km);
+        List<String> listaFormat;
         db = new DatabaseManager(this);
-        ListView listView = (ListView) findViewById(R.id.listaKm);
+        final ListView listView = (ListView) findViewById(R.id.listaKm);
         setTitle("Listar Quilometragem");
-        listaKm = db.result("km");
-
+        lista = db.resultKm("km");
+        listaFormat = formatItem(lista);
         try{
-            QuilometragemCustomAdapter adapter = new QuilometragemCustomAdapter(this.getApplicationContext() , listaKm);
+            ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listaFormat);
             listView.setAdapter(adapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent i = new Intent(ListaKm.this, VisualizarKm.class);
+                    i.putExtra("position", position);
+                    startActivity(i);
+                }
+            });
         }catch(Exception e){
             System.out.println(e.getMessage());
         }

@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import SQL.DatabaseManager;
 import comprovantes.ComprovanteAbastecimento;
@@ -72,6 +73,7 @@ public class Novo_veiculo extends Activity {
                     modelo.setText("");
                     marca.setText("");
                     data.setText("");
+                    Toast.makeText(Novo_veiculo.this, "Veiculo Adicionado.", Toast.LENGTH_LONG).show();
                 }catch(Exception e){
                     System.out.println(e.getMessage());
                 }
