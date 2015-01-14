@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppOldTheme">
         <activity
-            android:name="login_control.LoginScreen"
+            android:name="login_control.Tela_inicial"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,7 +48,7 @@
             android:name="veiculos.Novo_veiculo"
             android:finishOnTaskLaunch="true">
         </activity>
-        <activity android:name="login_control.Tela_inicial"
+        <activity android:name="login_control.LoginScreen"
             android:finishOnTaskLaunch="true">
         </activity>
 
@@ -79,6 +79,10 @@
         <activity android:name="veiculos.VisualizarVeiculo"
             android:finishOnTaskLaunch="true">
         </activity>
+
+        <activity android:name="comprovantes.VisualizarComprovante"
+            android:finishOnTaskLaunch="true"
+            />
 
     </application>
 

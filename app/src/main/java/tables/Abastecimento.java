@@ -9,6 +9,15 @@ public class Abastecimento {
     private int km_atual;
     private double litros;
     private double valor;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getEstabelecimento() {
         return estabelecimento;

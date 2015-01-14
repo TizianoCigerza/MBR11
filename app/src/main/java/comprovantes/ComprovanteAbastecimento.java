@@ -2,6 +2,7 @@ package comprovantes;
 
 import android.app.Activity;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,9 +16,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.io.File;
+import java.util.List;
 
+import SQL.DatabaseManager;
 import login_control.Tela_inicial;
 import mbrapp.tiziano.mbr.ListaKm;
 import mbrapp.tiziano.mbr.R;
@@ -45,7 +50,8 @@ public class ComprovanteAbastecimento extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comprovante_abastecimento);
         setTitle("Novo Abastecimento");
-
+        final Spinner combobox = (Spinner) findViewById(R.id.spinner2);
+        loadSpinnerData(combobox);
         final Button button2 = (Button) findViewById(R.id.buttonCamera);
         button2.setBackgroundResource(R.drawable.ic_action_camera);
         button2.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +117,28 @@ public class ComprovanteAbastecimento extends Activity {
                         break;
                 }}
         });
+    }
+
+    public void loadSpinnerData(Spinner combobox) {
+
+        DatabaseManager db = new DatabaseManager(getApplicationContext());
+        List<String> labels = db.getAllLabels("veiculos");
+        if (db.getAllLabels("veiculos").isEmpty()) {
+            Toast.makeText(ComprovanteAbastecimento.this, "Não há veículos cadastrados, \ncadastre um veiculo para continuar", Toast.LENGTH_LONG).show();
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent i = new Intent(ComprovanteAbastecimento.this, Novo_veiculo.class);
+                    startActivity(i);
+                }
+            }, 4000);
+        } else {
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, labels);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            combobox.setAdapter(dataAdapter);
+
+        }
     }
 
 

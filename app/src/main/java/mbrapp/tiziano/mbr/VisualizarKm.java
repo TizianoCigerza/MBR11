@@ -47,7 +47,7 @@ public class VisualizarKm extends Activity{
         Button imageB = (Button)findViewById(R.id.editButton);
         Button imageB2 = (Button) findViewById(R.id.deleteButton);
         imageB.setBackgroundResource(R.drawable.ic_action_edit);
-        imageB2.setBackgroundResource(R.drawable.ic_action_cancel);
+        imageB2.setBackgroundResource(R.drawable.ic_action_discard);
 
 
         imageB2.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +139,7 @@ public class VisualizarKm extends Activity{
         String veiculoStr;
         String destinoStr;
         destino = (TextView) findViewById(R.id.viewVeiculoMarca);
-        veiculo = (TextView) findViewById(R.id.viewVeiculoModelo);
+        veiculo = (TextView) findViewById(R.id.viewComprovanteEstabelecimento);
         nome = (TextView) findViewById(R.id.view);
         veiculoStr = km.getVeiculo();
         destinoStr = km.getDestino();

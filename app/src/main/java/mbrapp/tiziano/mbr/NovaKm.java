@@ -76,7 +76,7 @@ public class NovaKm extends Activity {
                 km.setKm_atual(Integer.parseInt(kmTexto));//km atual para o banco
 
                 km.setVeiculo(combobox.getSelectedItem().toString());
-                km.setId(db.getId());
+                km.setId(db.getIdKm());
                 km.setPlaca(db.getPlaca(km));
 
                 try{

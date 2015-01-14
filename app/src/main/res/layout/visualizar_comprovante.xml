@@ -27,7 +27,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Modelo: "
+                    android:text="Estabelecimento: "
                     android:id="@+id/comprovanteEstabelecimento"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="31dp"
@@ -43,17 +43,16 @@
                     android:id="@+id/viewComprovanteEstabelecimento"
                     android:layout_toEndOf="@+id/comprovanteEstabelecimento"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="56dp"
-                    android:layout_alignBottom="@+id/comprovanteEstabelecimento"
-                    android:layout_toRightOf="@+id/comprovanteEstabelecimento"
-                    android:layout_toLeftOf="@+id/editButton"
-                    android:layout_toStartOf="@+id/editButton" />
+                    android:layout_toStartOf="@+id/editButton"
+                    android:layout_below="@+id/comprovanteEstabelecimento"
+                    android:layout_alignLeft="@+id/comprovanteValor"
+                    android:layout_alignStart="@+id/comprovanteValor" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Marca: "
+                    android:text="Valor: "
                     android:id="@+id/comprovanteValor"
                     android:layout_gravity="center_horizontal"
                     android:layout_below="@+id/viewComprovanteEstabelecimento"
@@ -64,24 +63,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/viewVeiculoMarca"
-                    android:layout_alignBottom="@+id/comprovanteValor"
-                    android:layout_toLeftOf="@+id/deleteButton"
-                    android:layout_toStartOf="@+id/deleteButton"
-                    android:layout_alignLeft="@+id/viewComprovanteEstabelecimento"
-                    android:layout_alignStart="@+id/viewComprovanteEstabelecimento" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Placa: "
+                    android:text="Data: "
                     android:id="@+id/comprovanteData"
+                    android:layout_marginTop="34dp"
                     android:layout_below="@+id/comprovanteValor"
                     android:layout_alignLeft="@+id/comprovanteValor"
-                    android:layout_alignStart="@+id/comprovanteValor"
-                    android:layout_marginTop="54dp" />
+                    android:layout_alignStart="@+id/comprovanteValor" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -89,11 +77,9 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/viewComprovanteData"
                     android:layout_toStartOf="@+id/deleteButton"
-                    android:layout_toEndOf="@+id/comprovanteEstabelecimento"
+                    android:layout_toEndOf="@+id/comprovanteValor"
                     android:layout_alignBottom="@+id/deleteButton"
-                    android:layout_toLeftOf="@+id/deleteButton"
-                    android:layout_alignLeft="@+id/viewVeiculoMarca"
-                    android:layout_alignStart="@+id/viewVeiculoMarca" />
+                    android:layout_toRightOf="@+id/comprovanteValor" />
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
@@ -120,24 +106,33 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Data da troca de óleo:  "
-                    android:id="@+id/textView8"
-                    android:layout_centerVertical="true"
-                    android:layout_alignLeft="@+id/comprovanteData"
-                    android:layout_alignStart="@+id/comprovanteData" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/viewComprovanteValor"
+                    android:layout_toStartOf="@+id/deleteButton"
+                    android:layout_toEndOf="@+id/comprovanteValor"
+                    android:layout_alignTop="@+id/comprovanteValor"
+                    android:layout_toRightOf="@+id/comprovanteValor" />
+
+                <ImageView
+                    android:layout_width="180dp"
+                    android:layout_height="195dp"
+                    android:id="@+id/imagemComprovante"
+                    android:layout_marginBottom="30dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toRightOf="@+id/comprovanteData"
+                    android:layout_toEndOf="@+id/comprovanteData"
+                    android:layout_toLeftOf="@+id/deleteButton"
+                    android:layout_toStartOf="@+id/deleteButton" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearance"
-                    android:id="@+id/viewVeiculoData"
-                    android:layout_toStartOf="@+id/deleteButton"
-                    android:layout_alignTop="@+id/textView8"
-                    android:layout_toRightOf="@+id/textView8"
-                    android:layout_toEndOf="@+id/textView8"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Imagem: "
+                    android:id="@+id/comprovanteImagem"
+                    android:layout_centerVertical="true"
+                    android:layout_alignLeft="@+id/comprovanteData"
+                    android:layout_alignStart="@+id/comprovanteData" />
 
             </RelativeLayout>
         </FrameLayout>

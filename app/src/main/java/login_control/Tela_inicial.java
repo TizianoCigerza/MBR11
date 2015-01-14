@@ -28,6 +28,8 @@ public class Tela_inicial extends Activity {
     public void onCreate(Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
             setContentView(R.layout.tela_inicial);
+
+
         //Navigation drawer
         LayoutInflater lI = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         final View nav = lI.inflate(R.layout.tela_inicial, null);

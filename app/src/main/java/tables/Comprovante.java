@@ -7,18 +7,41 @@ import java.util.Date;
  */
 public class Comprovante {
 
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
+
+    public double toDouble(String valor){
+        double valorDouble = Double.parseDouble(valor);
+        return valorDouble;
+    }
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    private String imagem;
     private String estabelecimento;
     private double valor;
 
-    private Date data;
-
-    public Date getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(String data) {
         this.data = data;
     }
+
+    private String data;
 
     public double getValor() {
         return valor;

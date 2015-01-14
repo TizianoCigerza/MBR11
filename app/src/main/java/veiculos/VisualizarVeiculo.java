@@ -19,11 +19,8 @@ import SQL.DatabaseManager;
 import comprovantes.ListaAbast;
 import comprovantes.ListaGeral;
 import login_control.Tela_inicial;
-import mbrapp.tiziano.mbr.EditKm;
 import mbrapp.tiziano.mbr.ListaKm;
 import mbrapp.tiziano.mbr.R;
-import mbrapp.tiziano.mbr.VisualizarKm;
-import tables.Quilometragem;
 import tables.Veiculo;
 
 /**
@@ -44,9 +41,9 @@ public class VisualizarVeiculo extends Activity {
         String placa;
         String data;
 
-        TextView modeloText = (TextView) findViewById(R.id.viewVeiculoModelo);
+        TextView modeloText = (TextView) findViewById(R.id.viewComprovanteEstabelecimento);
         TextView marcaText = (TextView) findViewById(R.id.viewVeiculoMarca);
-        TextView placaText = (TextView) findViewById(R.id.viewVeiculoPlaca);
+        TextView placaText = (TextView) findViewById(R.id.viewComprovanteData);
         TextView dataText = (TextView) findViewById(R.id.viewVeiculoData);
 
         modelo = veiculo.getModelo();
@@ -75,7 +72,7 @@ public class VisualizarVeiculo extends Activity {
         Button imageB = (Button)findViewById(R.id.editButton);
         Button imageB2 = (Button) findViewById(R.id.deleteButton);
         imageB.setBackgroundResource(R.drawable.ic_action_edit);
-        imageB2.setBackgroundResource(R.drawable.ic_action_cancel);
+        imageB2.setBackgroundResource(R.drawable.ic_action_discard);
 
         imageB2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +80,6 @@ public class VisualizarVeiculo extends Activity {
                 Intent mIntent = getIntent();
                 int position = mIntent.getIntExtra("position", 0);
                 veiculo = veiculos.get(position);
-                veiculo.setId(position);
                 db.deleteVeiculo(veiculo);
                 Toast.makeText(VisualizarVeiculo.this, "Veiculo removido.", Toast.LENGTH_LONG).show();
                 Intent i = new Intent(VisualizarVeiculo.this, ListaVeiculo.class);

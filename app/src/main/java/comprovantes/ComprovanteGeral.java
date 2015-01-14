@@ -17,19 +17,34 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.File;
 
+import SQL.DatabaseManager;
 import login_control.Tela_inicial;
+import mbrapp.tiziano.mbr.KmFunctions;
 import mbrapp.tiziano.mbr.ListaKm;
 import mbrapp.tiziano.mbr.R;
+import tables.Comprovante;
 import veiculos.Novo_veiculo;
+import veiculos.VeiculoFunctions;
 
 /**
  * Created by Tiziano on 28/11/2014.
  */
 public class ComprovanteGeral extends Activity {
     final static int CAMERA_REQUEST = 1;
+
+    String nomeImagem;
+
+    public String getNomeImagem() {
+        return nomeImagem;
+    }
+
+    public void setNomeImagem(String nomeImagem) {
+        this.nomeImagem = nomeImagem;
+    }
 
     String caminho;
 
@@ -43,36 +58,49 @@ public class ComprovanteGeral extends Activity {
         return caminho;
     }
 
+    DatabaseManager db;
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comprovante_geral);
         setTitle("Novo Comprovante Geral");
-
+        db = new DatabaseManager(this);
         final EditText editValor = (EditText) findViewById(R.id.editValor);
-        final EditText editCodigo = (EditText) findViewById(R.id.editCodigo);
         final EditText editData = (EditText) findViewById(R.id.editData);
         final EditText editEstabelecimento = (EditText) findViewById(R.id.editEstabelecimento);
-        final Button button3 = (Button) findViewById(R.id.buttonSearch);
         final Button button2 = (Button) findViewById(R.id.buttonCamera);
         final Button button1 = (Button) findViewById(R.id.buttonCompGeral);
-        button3.setBackgroundResource(R.drawable.ic_action_search);
+        editData.addTextChangedListener(VeiculoFunctions.insert("##/##/####",editData));
         button2.setBackgroundResource(R.drawable.ic_action_camera);
-
-
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Comprovante comp = new Comprovante();
+
                 Editable editableValor = editValor.getText();
                 String valor = editableValor.toString();
+                valor = valor.replace(",",".");
+                comp.setValor(comp.toDouble(valor));
 
-                Editable editableCodigo = editCodigo.getText();
-                String codigo = editableCodigo.toString();
 
                 Editable editableData = editData.getText();
                 String data = editableData.toString();
+                comp.setData(data);
 
                 Editable editableEstabelecimento = editEstabelecimento.getText();
                 String estabelecimento = editableEstabelecimento.toString();
+                comp.setEstabelecimento(estabelecimento);
+
+                comp.setImagem(nomeImagem);
+
+                comp.setId(db.getIdComprovante());
+                System.out.println("valor id criacao do comp: "+ comp.getId());
+
+                db.insertComprovante(comp);
+                editValor.setText("");
+                editData.setText("");
+                editEstabelecimento.setText("");
+                Toast.makeText(ComprovanteGeral.this, "Comprovante adicionado.", Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -130,7 +158,9 @@ public class ComprovanteGeral extends Activity {
                         while (output.exists()) {
                             imageNum++;
                             fileName = "imageComprovanteGeral_" + String.valueOf(imageNum) + ".jpg";
+                            String fileNameNoJpg = "imageComprovanteGeral_" + String.valueOf(imageNum);
                             output = new File(MBRcomprovantes, fileName);
+                            setNomeImagem(fileNameNoJpg);
                         }
                         File out = output;
                         setCaminho(out.getAbsolutePath());
@@ -144,12 +174,19 @@ public class ComprovanteGeral extends Activity {
         });
     }
 
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         ImageView photo_view = (ImageView) findViewById(R.id.photo_view);
         Bitmap image = BitmapFactory.decodeFile(this.getCaminho());
         photo_view.setImageBitmap(image);
-        photo_view.invalidate();
+        if(!photo_view.getDrawable().isVisible()){
+            Bitmap image2 = BitmapFactory.decodeFile(this.getCaminho());
+            photo_view.setImageBitmap(image2);
+            photo_view.invalidate();
+        }
+
     }
 
 

@@ -64,6 +64,7 @@ public class ListaKm extends Activity {
         setTitle("Listar Quilometragem");
         lista = db.resultKm("km");
         listaFormat = formatItem(lista);
+        db.isEmpty("km");
         try{
             ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listaFormat);
             listView.setAdapter(adapter);

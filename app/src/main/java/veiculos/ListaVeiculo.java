@@ -27,12 +27,10 @@ import tables.Veiculo;
  * Created by Tiziano on 24/11/2014.
  */
 public class ListaVeiculo extends Activity {
-    List<String> lista;
     DrawerLayout dLayout;
     ListView dList2;
     ArrayAdapter<String> drawerAdapter;
     DatabaseManager db;
-    Quilometragem km;
     List<Veiculo> listaVeiculo;
 
 
@@ -62,6 +60,7 @@ public class ListaVeiculo extends Activity {
         List<String> listaFormat;
         listaVeiculo = db.resultVeiculo("veiculos");
         listaFormat = formatItem(listaVeiculo);
+        db.isEmpty("veiculos");
         try{
             ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listaFormat);
             listView.setAdapter(adapter);

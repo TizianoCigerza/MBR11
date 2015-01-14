@@ -10,30 +10,67 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import SQL.DatabaseManager;
 import login_control.Tela_inicial;
 import mbrapp.tiziano.mbr.ListaKm;
 import mbrapp.tiziano.mbr.R;
+import mbrapp.tiziano.mbr.VisualizarKm;
+import tables.Comprovante;
 import veiculos.ListaVeiculo;
-import veiculos.Novo_veiculo;
 
 /**
  * Created by Tiziano on 24/11/2014.
  */
 public class ListaGeral extends ListActivity {
-    String[] lista = new String[]{" "};//dados pegos do sqlite
-    String[] menu;
     DrawerLayout dLayout;
     ListView dList2;
     ArrayAdapter<String> drawerAdapter;
+    DatabaseManager db;
+
+    public List<String> formatItem(List<Comprovante> lista){
+        List<String> item = new ArrayList<String>();
+        double valor;
+        String estabelecimento;
+        for(int i=0;i<lista.size();i++) {
+            valor = lista.get(i).getValor();
+            estabelecimento = lista.get(i).getEstabelecimento();
+            System.out.println(valor);
+            System.out.println(estabelecimento);
+            item.add("\nValor:  " + valor+ "  Estabelecimento:  " + estabelecimento + ("\n"));
+        }
+        return item;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lista_comprovante);
 
-        setTitle("Comprovante Geral");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lista);
-        setListAdapter(adapter);
+        setTitle("Lista Comprovante Geral");
+        List<Comprovante> lista;
+        List<String> listaFormat = new ArrayList<String>();
+        ListView listView = (ListView) findViewById(R.id.listaComprovante);
+
+        db = new DatabaseManager(this);
+        db.deleteTableEntries("comprovante_geral");
+        db.createTables();
+        lista = db.resultComprovante("comprovante_geral");
+        listaFormat = formatItem(lista);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listaFormat);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(ListaGeral.this, VisualizarComprovante.class);
+                i.putExtra("position", position);
+                startActivity(i);
+            }
+        });
 
 
         ImageButton button = (ImageButton) findViewById(R.id.novo_comprovante);
