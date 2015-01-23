@@ -3,6 +3,7 @@ package comprovantes;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import login_control.Tela_inicial;
 import mbrapp.tiziano.mbr.ListaKm;
 import mbrapp.tiziano.mbr.R;
 import mbrapp.tiziano.mbr.VisualizarKm;
+import tables.Abastecimento;
 import tables.Comprovante;
 import veiculos.ListaVeiculo;
 
@@ -29,6 +32,7 @@ public class ListaGeral extends ListActivity {
     ListView dList2;
     ArrayAdapter<String> drawerAdapter;
     DatabaseManager db;
+    List<Abastecimento> listaA;
 
     public List<String> formatItem(List<Comprovante> lista){
         List<String> item = new ArrayList<String>();
@@ -44,6 +48,15 @@ public class ListaGeral extends ListActivity {
         return item;
     }
 
+    public void DeleteRecursive(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory())
+            for (File child : fileOrDirectory.listFiles())
+                DeleteRecursive(child);
+
+        fileOrDirectory.delete();
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,10 +68,16 @@ public class ListaGeral extends ListActivity {
         ListView listView = (ListView) findViewById(R.id.listaComprovante);
 
         db = new DatabaseManager(this);
-        db.deleteTableEntries("comprovante_geral");
+        //db.dropTable("abastecimento");
+        //db.deleteTableEntries("comprovante_geral");
         db.createTables();
         lista = db.resultComprovante("comprovante_geral");
+        listaA = db.resultAbastecimento("abastecimento");
         listaFormat = formatItem(lista);
+        if(lista.isEmpty() && listaA.isEmpty()){//checar
+            File MBRcomprovantes  = new File(Environment.getExternalStorageDirectory() + File.separator + "MbrFotos");
+            DeleteRecursive(MBRcomprovantes);
+        }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listaFormat);
         listView.setAdapter(adapter);

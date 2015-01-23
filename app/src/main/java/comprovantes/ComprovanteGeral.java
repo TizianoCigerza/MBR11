@@ -35,9 +35,11 @@ import veiculos.VeiculoFunctions;
  */
 public class ComprovanteGeral extends Activity {
     final static int CAMERA_REQUEST = 1;
-
+    int imageNum = 1;
     String nomeImagem;
-
+    String fileName = "imageComprovanteGeral_" + String.valueOf(imageNum) + ".jpg";
+    File MBRcomprovantes = new File(Environment.getExternalStorageDirectory() + File.separator + "MbrFotos");
+    File output = new File(MBRcomprovantes, fileName);
     public String getNomeImagem() {
         return nomeImagem;
     }
@@ -64,6 +66,8 @@ public class ComprovanteGeral extends Activity {
         setContentView(R.layout.comprovante_geral);
         setTitle("Novo Comprovante Geral");
         db = new DatabaseManager(this);
+        final Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        MBRcomprovantes.mkdir();
         final EditText editValor = (EditText) findViewById(R.id.editValor);
         final EditText editData = (EditText) findViewById(R.id.editData);
         final EditText editEstabelecimento = (EditText) findViewById(R.id.editEstabelecimento);
@@ -90,7 +94,7 @@ public class ComprovanteGeral extends Activity {
                 String estabelecimento = editableEstabelecimento.toString();
                 comp.setEstabelecimento(estabelecimento);
 
-                comp.setImagem(nomeImagem);
+                comp.setImagem(getNomeImagem());
 
                 comp.setId(db.getIdComprovante());
                 System.out.println("valor id criacao do comp: "+ comp.getId());
@@ -105,8 +109,8 @@ public class ComprovanteGeral extends Activity {
         });
 
         final String[] menu = new String[]{"Quilometragem","Abastecimento", "Comprovante Geral", "Veículos","","Home"};
-        final DrawerLayout dLayout = (DrawerLayout) findViewById(R.id.lista_comp_geral_drawer);
-        final ListView dList2 = (ListView) findViewById(R.id.lista_geral_left_drawer);
+        final DrawerLayout dLayout = (DrawerLayout) findViewById(R.id.comp_geral_drawer);
+        final ListView dList2 = (ListView) findViewById(R.id.geral_left_drawer);
         try {
             ArrayAdapter<String> drawerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menu);
             dList2.setAdapter(drawerAdapter);
@@ -148,19 +152,18 @@ public class ComprovanteGeral extends Activity {
             @Override
             public void onClick(View v) {
                 try {
-                    int imageNum = 0;
-                    final Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    String fileName = "imageComprovanteGeral_" + String.valueOf(imageNum) + ".jpg";
-                    final File MBRcomprovantes = new File(Environment.getExternalStorageDirectory() + File.separator + "MbrFotos");
-                    File output = new File(MBRcomprovantes, fileName);
-                    MBRcomprovantes.mkdir();
-                    if (MBRcomprovantes.exists()) {
+                    if (MBRcomprovantes.exists()) {//checar null.jpg
                         while (output.exists()) {
-                            imageNum++;
-                            fileName = "imageComprovanteGeral_" + String.valueOf(imageNum) + ".jpg";
-                            String fileNameNoJpg = "imageComprovanteGeral_" + String.valueOf(imageNum);
-                            output = new File(MBRcomprovantes, fileName);
-                            setNomeImagem(fileNameNoJpg);
+                            if (MBRcomprovantes.listFiles().length == 0) {
+                                setNomeImagem("imageComprovanteGeral_" + String.valueOf(imageNum) + ".jpg");
+                                imageNum++;
+                            } else {
+                                imageNum++;
+                                fileName = "imageComprovanteGeral_" + String.valueOf(imageNum) + ".jpg";
+                                String fileNameNoJpg = "imageComprovanteGeral_" + String.valueOf(imageNum);
+                                output = new File(MBRcomprovantes, fileName);
+                                setNomeImagem(fileNameNoJpg);
+                            }
                         }
                         File out = output;
                         setCaminho(out.getAbsolutePath());
@@ -181,7 +184,8 @@ public class ComprovanteGeral extends Activity {
         ImageView photo_view = (ImageView) findViewById(R.id.photo_view);
         Bitmap image = BitmapFactory.decodeFile(this.getCaminho());
         photo_view.setImageBitmap(image);
-        if(!photo_view.getDrawable().isVisible()){
+        String imagem = getResources().getResourceName(R.id.photo_view);
+        if(imagem.isEmpty()){
             Bitmap image2 = BitmapFactory.decodeFile(this.getCaminho());
             photo_view.setImageBitmap(image2);
             photo_view.invalidate();

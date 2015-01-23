@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import tables.Abastecimento;
 import tables.Comprovante;
 import tables.Quilometragem;
 import tables.Veiculo;
@@ -27,13 +28,9 @@ public class DatabaseManager extends SQLiteOpenHelper{
 
     private static final int database_version = 1;
 
-    private final String create_table_abastecimento = "CREATE TABLE IF NOT EXISTS abastecimento (_id INTEGER PRIMARY KEY AUTOINCREMENT, estabelecimento TEXT, km_atual INT, litros NUMERIC, valor NUMERIC);";
+    private final String create_table_abastecimento = "CREATE TABLE IF NOT EXISTS abastecimento (_id INTEGER PRIMARY KEY AUTOINCREMENT, estabelecimento TEXT, km_atual INT, litros NUMERIC, valor NUMERIC, veiculo TEXT, imagem TEXT);";
 
     private final String create_table_comprovante_geral = "CREATE TABLE IF NOT EXISTS comprovante_geral (_id INTEGER PRIMARY KEY AUTOINCREMENT, estabelecimento TEXT, valor REAL, data TEXT, imagem TEXT);";
-
-    private final String create_table_estabelecimento ="CREATE TABLE IF NOT EXISTS estabelecimento (_id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT);";
-
-    private final String  create_table_marca="CREATE TABLE IF NOT EXISTS marca (_id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT);";
 
     private final String create_table_km = "CREATE TABLE IF NOT EXISTS km (_id INTEGER PRIMARY KEY AUTOINCREMENT, km_atual INT, destino TEXT, placa TEXT, nome TEXT, veiculo TEXT);";
 
@@ -51,13 +48,13 @@ public class DatabaseManager extends SQLiteOpenHelper{
 
     private final String dropTable = "DROP TABLE ";
 
+    private final String deleteAbastecimento = "DELETE FROM abastecimento WHERE ROWID = ";
+
     public void createTables(){
         db.execSQL(create_table_abastecimento);
         db.execSQL(create_table_veiculos);
         db.execSQL(create_table_comprovante_geral);
         db.execSQL(create_table_km);
-        db.execSQL(create_table_estabelecimento);
-        db.execSQL(create_table_marca);
     }
 
     @Override
@@ -70,6 +67,23 @@ public class DatabaseManager extends SQLiteOpenHelper{
 
     public void dropTable(String tableName){
         db.execSQL(dropTable.concat(tableName));
+    }
+//"CREATE TABLE IF NOT EXISTS abastecimento (_id INTEGER PRIMARY KEY AUTOINCREMENT, estabelecimento TEXT, km_atual INT, litros NUMERIC, valor NUMERIC, id_abastecimento INT);";
+
+    public void insertAbastecimento(Abastecimento abastecimento){
+        final String insertAbastecimento = "INSERT INTO abastecimento (estabelecimento, km_atual, litros, valor, veiculo, imagem,id_abastecimento) values ('"+abastecimento.getEstabelecimento()+"',"+abastecimento.getKm_atual()+","+abastecimento.getLitros()+","+abastecimento.getValor()+",'"+abastecimento.getVeiculo()+"','"+abastecimento.getImagem()+"',"+abastecimento.getId()+");";
+        db.execSQL(insertAbastecimento);
+    }
+
+    public void updateAbastecimento(Abastecimento abastecimento){
+        final String updateAbastecimento = "UPDATE abastecimento SET estabelecimento = '"+abastecimento.getEstabelecimento()+"',km_atual = "+abastecimento.getKm_atual()+", litros = "+abastecimento.getLitros()+", valor = "+abastecimento.getValor()+"WHERE ROWID = "+abastecimento.getId()+";";
+    }
+    public void updateComprovante(Comprovante comprovante){
+        final String updateComprovante = "UPDATE comprovante_geral SET estabelecimento = '"+comprovante.getEstabelecimento()+"', valor = "+comprovante.getValor()+", data = '"+comprovante.getData()+"', imagem = '"+comprovante.getImagem()+"' WHERE ROWID = "+comprovante.getId()+";";
+        System.out.println("imagem updated: "+comprovante.getImagem());
+        System.out.println(comprovante.getId());
+        System.out.println(comprovante.getEstabelecimento());
+        db.execSQL(updateComprovante);
     }
 
     public void updateVeiculo(Veiculo veiculo){
@@ -92,9 +106,9 @@ public class DatabaseManager extends SQLiteOpenHelper{
         db.execSQL(insertVeiculo);
     }
 
-    public void insertComprovante(Comprovante comprovante){//"CREATE TABLE IF NOT EXISTS comprovante_geral (_id INTEGER PRIMARY KEY AUTOINCREMENT, estabelecimento TEXT, valor REAL, date TEXT);";
+    public void insertComprovante(Comprovante comprovante){
         System.out.println("imagem: " + comprovante.getImagem());
-        final String insertComprovante = "INSERT INTO comprovante_geral (estabelecimento, valor, data,imagem) values ('"+comprovante.getEstabelecimento()+"', "+comprovante.getValor()+", '"+comprovante.getData()+"', '"+comprovante.getImagem()+"');";
+        final String insertComprovante = "INSERT INTO comprovante_geral (estabelecimento, valor, data,imagem, id_comprovante) values ('"+comprovante.getEstabelecimento()+"', "+comprovante.getValor()+", '"+comprovante.getData()+"', '"+comprovante.getImagem()+"'," +comprovante.getId()+");";
         db.execSQL(insertComprovante);
     }
 
@@ -119,39 +133,42 @@ public class DatabaseManager extends SQLiteOpenHelper{
         return position;
     }
 
-    public void deleteVeiculo(Veiculo veiculo){
-
-        int qtdVeiculo = getCount("veiculos");
-        String pos = String.valueOf(veiculo.getId());
-        if(qtdVeiculo == Integer.parseInt(pos)){
-            db.execSQL(deleteVeiculo.concat(pos).concat(";"));
-            resetAutoIncrement("veiculos");
+    public void deleteAbastecimento(Abastecimento abast){
+        String pos = String.valueOf(abast.getId());
+        db.execSQL(deleteAbastecimento.concat(pos).concat(";"));
+        int qtdAbastecimento = getCount("abastecimento");
+        if(qtdAbastecimento == 0){
+            resetAutoIncrement("abastecimento");
         }else{
-            db.execSQL(deleteVeiculo.concat(pos).concat(";"));
+            db.execSQL(deleteAbastecimento.concat(pos).concat(";"));
         }
     }
 
-    public void deleteComprovante(Comprovante comp){
-        int id = comp.getId();
-        String pos = String.valueOf(comp.getId()+1);
-        System.out.println("comprovante id: "+comp.getId());
+    public void deleteVeiculo(Veiculo veiculo){
+        String pos = String.valueOf(veiculo.getId());
+        db.execSQL(deleteVeiculo.concat(pos).concat(";"));
+        int qtdVeiculo = getCount("veiculos");
+        if(qtdVeiculo == 0){
+            resetAutoIncrement("veiculos");
+        }
+    }
+
+    public void deleteComprovante(Comprovante comprovante){//works
+        int id = comprovante.getId();
+        String pos = String.valueOf(id);
+        db.execSQL(deleteComprovante.concat(pos).concat(";"));
         int qtdComp = getCount("comprovante_geral");
-        if(qtdComp == Integer.parseInt(pos)){
-            db.execSQL(deleteComprovante.concat(pos).concat(";"));
+        if(qtdComp == 0){
             resetAutoIncrement("comprovante_geral");
-        }else{
-            db.execSQL(deleteComprovante.concat(pos.concat(";")));
         }
     }
 
     public void deleteKm(Quilometragem km){
         String pos = String.valueOf(km.getId());
+        db.execSQL(deleteKm.concat(pos).concat(";"));
         int qtdKm = getCount("km");
-        if(qtdKm == Integer.parseInt(pos)){
-            db.execSQL(deleteKm.concat(pos).concat(";"));
+        if(qtdKm == 0){
             resetAutoIncrement("km");
-        }else{
-            db.execSQL(deleteKm.concat(pos).concat(";"));
         }
     }
 
@@ -161,22 +178,61 @@ public class DatabaseManager extends SQLiteOpenHelper{
     }
 
     public int getIdKm(){
-        Cursor cursor = dbr.rawQuery("SELECT _id FROM km", null);
-        cursor.moveToLast();
-        int position = cursor.getPosition() + 1;
-        return position;
+        int id;
+        Cursor cursor = dbr.rawQuery("SELECT _id FROM km;", null);
+        cursor.moveToFirst();
+        if(cursor.getCount()==0){
+            return 1;
+        }else{
+            do{
+                id=cursor.getInt(0);
+            }while(cursor.moveToNext());
+            id++;
+        }
+        return id;
     }
 
     public int getIdComprovante(){
         int id;
-        Cursor cursor = dbr.rawQuery("SELECT _id FROM comprovante_geral",null);
+        Cursor cursor = dbr.rawQuery("SELECT _id FROM comprovante_geral;", null);
         cursor.moveToFirst();
-        do{
-            id = cursor.getPosition();
-        }while(cursor.moveToNext());
         if(cursor.getCount()==0){
-            id=1;
+            return 1;
         }else{
+            do{
+                id=cursor.getInt(0);
+            }while(cursor.moveToNext());
+            id++;
+        }
+        return id;
+    }
+
+    public int getIdAbastecimento(){
+        int id;
+        Cursor cursor = dbr.rawQuery("SELECT _id FROM abastecimento",null);
+        cursor.moveToFirst();
+        if(cursor.getCount()==0){
+            return 1;
+        }else{
+            do{
+                id=cursor.getInt(0);
+            }while(cursor.moveToNext());
+            id++;
+        }
+        return id;
+    }
+
+
+    public int getIdComprovanteGeral(int position){
+        int id;
+        Cursor cursor = dbr.rawQuery("SELECT _id FROM comprovante_geral;", null);
+        cursor.moveToFirst();
+        if(cursor.getCount()==0){
+            return 1;
+        }else{
+            do{
+                id=cursor.getInt(0);
+            }while(cursor.moveToNext());
             id++;
         }
         return id;
@@ -184,17 +240,16 @@ public class DatabaseManager extends SQLiteOpenHelper{
 
     public int getIdVeiculo(){
         int id;
-        Cursor cursor = dbr.rawQuery("SELECT ROWID FROM veiculos;", null);
+        Cursor cursor = dbr.rawQuery("SELECT _id FROM veiculos;", null);
         cursor.moveToFirst();
-        do {
-            id = cursor.getPosition();
-        }while(cursor.moveToNext());
-        if (cursor.getCount()==0){
-            id=1;
+        if(cursor.getCount()==0){
+            return 1;
         }else{
+            do{
+                id=cursor.getInt(0);
+            }while(cursor.moveToNext());
             id++;
         }
-        System.out.println(id);
         return id;
     }
 
@@ -266,6 +321,27 @@ public class DatabaseManager extends SQLiteOpenHelper{
         return list;
     }
 
+    public List<Abastecimento> resultAbastecimento(String tableName){
+        List<Abastecimento> list = new ArrayList<Abastecimento>();
+        Abastecimento abast;
+        Cursor cursor = dbr.rawQuery(get_result.concat(tableName).concat(";"),null);
+        if(cursor != null&& cursor.moveToFirst()){
+            do{
+                abast = new Abastecimento();
+                abast.setId(cursor.getInt(cursor.getColumnIndex("_id")));
+                abast.setEstabelecimento(cursor.getString(cursor.getColumnIndex("estabelecimento")));
+                abast.setValor(cursor.getDouble(cursor.getColumnIndex("valor")));
+                abast.setKm_atual(cursor.getInt(cursor.getColumnIndex("km_atual")));
+                abast.setLitros(cursor.getDouble(cursor.getColumnIndex("litros")));
+                abast.setVeiculo(cursor.getString(cursor.getColumnIndex("veiculo")));
+                abast.setImagem(cursor.getString(cursor.getColumnIndex("imagem")));
+                System.out.println(cursor.getString(cursor.getColumnIndex("imagem")));
+                list.add(abast);
+            }while(cursor.moveToNext());
+        }
+        return list;
+    }
+
     public List<Comprovante> resultComprovante(String tableName){
         List<Comprovante> list = new ArrayList<Comprovante>();
         Comprovante comprovante;
@@ -273,6 +349,7 @@ public class DatabaseManager extends SQLiteOpenHelper{
         if(cursor != null && cursor.moveToFirst()){
             do{
                 comprovante = new Comprovante();
+                comprovante.setId(cursor.getInt(cursor.getColumnIndex("_id")));
                 comprovante.setEstabelecimento(cursor.getString(cursor.getColumnIndex("estabelecimento")));
                 comprovante.setValor(cursor.getDouble(cursor.getColumnIndex("valor")));
                 comprovante.setData(cursor.getString(cursor.getColumnIndex("data")));

@@ -51,15 +51,15 @@ public class VisualizarVeiculo extends Activity {
         placa = veiculo.getPlaca();
         data = veiculo.getTroca_oleo();
 
-            modeloText.setText(modelo);
+            modeloText.setText(+veiculo.getId()+modelo);
             marcaText.setText(marca);
             placaText.setText(placa);
             dataText.setText(data);
 
-        modeloText.setText(veiculo.getModelo());
+       /* modeloText.setText(veiculo.getModelo());
         marcaText.setText(veiculo.getMarca());
         dataText.setText(veiculo.getTroca_oleo());
-        placaText.setText(veiculo.getPlaca());
+        placaText.setText(veiculo.getPlaca());*/
     }
 
     @Override

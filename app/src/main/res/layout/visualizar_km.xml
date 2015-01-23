@@ -117,6 +117,27 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="45dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Km atual: "
+        android:id="@+id/textView6"
+        android:layout_toStartOf="@+id/viewKm"
+        android:layout_alignBottom="@+id/viewKm"
+        android:layout_alignLeft="@+id/viewComprovanteData"
+        android:layout_alignStart="@+id/viewComprovanteData"
+        android:layout_toLeftOf="@+id/viewKm" />
+
+    <TextView
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/viewKm"
+        android:layout_toStartOf="@+id/deleteButton"
+        android:layout_toEndOf="@+id/textView6"
+        android:layout_centerVertical="true" />
+
 </RelativeLayout>
         </FrameLayout>
 

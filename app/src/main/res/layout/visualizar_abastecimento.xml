@@ -1,0 +1,152 @@
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/abast_drawer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- The main content view -->
+
+    <LinearLayout
+        android:id="@+id/abast_slidermenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <FrameLayout
+            android:id="@+id/abast_slider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical" android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/RelativeLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Veiculo: "
+                    android:id="@+id/comprovanteEstabelecimento"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="31dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="37dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/viewVeiculo"
+                    android:layout_toEndOf="@+id/comprovanteEstabelecimento"
+                    android:layout_gravity="center"
+                    android:layout_toStartOf="@+id/editButton"
+                    android:layout_alignBottom="@+id/comprovanteEstabelecimento"
+                    android:layout_toRightOf="@+id/comprovanteEstabelecimento" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Litros: "
+                    android:id="@+id/comprovanteValor"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@+id/viewVeiculo"
+                    android:layout_alignLeft="@+id/comprovanteEstabelecimento"
+                    android:layout_alignStart="@+id/comprovanteEstabelecimento"
+                    android:layout_marginTop="40dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Valor: "
+                    android:id="@+id/comprovanteData"
+                    android:layout_marginTop="34dp"
+                    android:layout_below="@+id/comprovanteValor"
+                    android:layout_alignLeft="@+id/comprovanteValor"
+                    android:layout_alignStart="@+id/comprovanteValor" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/viewAbastecimentoValor"
+                    android:layout_toStartOf="@+id/deleteButton"
+                    android:layout_toEndOf="@+id/comprovanteValor"
+                    android:layout_alignBottom="@+id/deleteButton"
+                    android:layout_toRightOf="@+id/comprovanteValor" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editButton"
+                    android:layout_toStartOf="@+id/deleteButton"
+                    android:layout_alignTop="@+id/viewVeiculo"
+                    android:layout_alignLeft="@+id/deleteButton"
+                    android:layout_alignStart="@+id/deleteButton"
+                    android:layout_alignRight="@+id/deleteButton"
+                    android:layout_alignEnd="@+id/deleteButton" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/deleteButton"
+                    android:layout_marginRight="44dp"
+                    android:layout_alignBottom="@+id/comprovanteData"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/viewAbastecimentoLitros"
+                    android:layout_toStartOf="@+id/deleteButton"
+                    android:layout_toEndOf="@+id/comprovanteValor"
+                    android:layout_alignTop="@+id/comprovanteValor"
+                    android:layout_toRightOf="@+id/comprovanteValor" />
+
+                <ImageView
+                    android:layout_width="180dp"
+                    android:layout_height="195dp"
+                    android:id="@+id/imagemAbastecimento"
+                    android:layout_marginBottom="30dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toRightOf="@+id/comprovanteData"
+                    android:layout_toEndOf="@+id/comprovanteData"
+                    android:layout_toLeftOf="@+id/deleteButton"
+                    android:layout_toStartOf="@+id/deleteButton" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Imagem: "
+                    android:id="@+id/comprovanteImagem"
+                    android:layout_centerVertical="true"
+                    android:layout_alignLeft="@+id/comprovanteData"
+                    android:layout_alignStart="@+id/comprovanteData" />
+
+            </RelativeLayout>
+        </FrameLayout>
+
+
+
+    </LinearLayout>
+
+    <ListView android:id="@+id/abast_leftDrawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:background="#fffff9ec"/>
+
+</android.support.v4.widget.DrawerLayout>

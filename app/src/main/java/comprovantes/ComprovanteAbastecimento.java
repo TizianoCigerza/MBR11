@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Editable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -26,17 +28,31 @@ import SQL.DatabaseManager;
 import login_control.Tela_inicial;
 import mbrapp.tiziano.mbr.ListaKm;
 import mbrapp.tiziano.mbr.R;
+import tables.Abastecimento;
 import veiculos.Novo_veiculo;
 
 /**
  * Created by Tiziano on 28/11/2014.
  */
 public class ComprovanteAbastecimento extends Activity {
-
-
-
+    TextView km_atual;
+    TextView valor;
+    TextView litros;
     String caminho;
+    List<Abastecimento> lista;
+    Abastecimento abast;
+    DatabaseManager db;
     final static int CAMERA_REQUEST = 1;
+    String nomeImagem;
+
+    public String getNomeImagem() {
+        return nomeImagem;
+    }
+
+    public void setNomeImagem(String nomeImagem) {
+        this.nomeImagem = nomeImagem;
+    }
+
     public void setCaminho(String caminho) {
 
         this.caminho = caminho;
@@ -52,7 +68,42 @@ public class ComprovanteAbastecimento extends Activity {
         setTitle("Novo Abastecimento");
         final Spinner combobox = (Spinner) findViewById(R.id.spinner2);
         loadSpinnerData(combobox);
+        db = new DatabaseManager(this);
         final Button button2 = (Button) findViewById(R.id.buttonCamera);
+        Button button = (Button) findViewById(R.id.buttonSalvarAbast);
+        km_atual = (TextView) findViewById(R.id.editEstabelecimento);
+        valor = (TextView) findViewById(R.id.editValor);
+        litros = (TextView) findViewById(R.id.editCodigo);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                abast = new Abastecimento();
+                Editable editableValor = valor.getEditableText();
+                String valorStr = editableValor.toString();
+                valorStr = valorStr.replace(",",".");
+                abast.setValor(abast.toDouble(valorStr));
+
+                Editable editableLitros = litros.getEditableText();
+                String litrosStr = editableLitros.toString();
+                abast.setLitros(abast.toDouble(litrosStr));
+
+                Editable kmAtual = km_atual.getEditableText();
+                String kmStr = kmAtual.toString();
+                abast.setKm_atual(Integer.parseInt(kmStr));
+
+                abast.setId(db.getIdAbastecimento());
+                abast.setImagem(getNomeImagem());
+                abast.setVeiculo(combobox.getSelectedItem().toString());
+
+                try{
+                    db.insertAbastecimento(abast);
+                    Toast.makeText(ComprovanteAbastecimento.this, "Abastecimento adicionado", Toast.LENGTH_LONG).show();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        });
         button2.setBackgroundResource(R.drawable.ic_action_camera);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,14 +111,16 @@ public class ComprovanteAbastecimento extends Activity {
                 try {
                     int imageNum = 0;
                     final Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    String fileName = "imageComprovanteAbast" + String.valueOf(imageNum) + ".jpg";
+                    String fileName = "imageComprovanteAbast_" + String.valueOf(imageNum) + ".jpg";
                     final File MBRcomprovantes = new File(Environment.getExternalStorageDirectory() + File.separator + "MbrFotos");
                     File output = new File(MBRcomprovantes, fileName);
                     MBRcomprovantes.mkdir();
                     if (MBRcomprovantes.exists()) {
                         while (output.exists()) {
                             imageNum++;
-                            fileName = "imageComprovanteAbast" + String.valueOf(imageNum) + ".jpg";
+                            fileName = "imageComprovanteAbast_" + String.valueOf(imageNum) + ".jpg";
+                            String fileNameNoJpg = "imageComprovanteAbast_" + String.valueOf(imageNum);
+                            setNomeImagem(fileNameNoJpg);
                             output = new File(MBRcomprovantes, fileName);
                         }
                         File out = output;
@@ -80,7 +133,7 @@ public class ComprovanteAbastecimento extends Activity {
                 }
             }
         });
-        final String[] menu = new String[]{"Nova Quilometragem","Abastecimento", "Comprovante Geral", "Veículos","","Home"};
+        final String[] menu = new String[]{"Quilometragem","Abastecimento", "Comprovante Geral", "Veículos","","Home"};
         final DrawerLayout dLayout = (DrawerLayout) findViewById(R.id.lista_comp_geral_drawer);
         final ListView dList2 = (ListView) findViewById(R.id.lista_geral_left_drawer);
         try {
@@ -144,10 +197,16 @@ public class ComprovanteAbastecimento extends Activity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
-        ImageView photo_view = (ImageView) findViewById(R.id.photo_view);
+        ImageView photo_view = (ImageView) findViewById(R.id.photo_viewAbast);
         Bitmap image = BitmapFactory.decodeFile(this.getCaminho());
         photo_view.setImageBitmap(image);
         photo_view.invalidate();
+        String imagem = getResources().getResourceName(R.id.photo_view);
+        if(imagem.isEmpty()){
+            Bitmap image2 = BitmapFactory.decodeFile(this.getCaminho());
+            photo_view.setImageBitmap(image2);
+            photo_view.invalidate();
+        }
     }
 
 

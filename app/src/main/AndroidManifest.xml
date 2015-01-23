@@ -84,6 +84,17 @@
             android:finishOnTaskLaunch="true"
             />
 
+        <activity android:name="comprovantes.EditComprovante"
+            android:finishOnTaskLaunch="true"
+        />
+
+        <activity android:name="comprovantes.VisualizarAbastecimento"
+            android:finishOnTaskLaunch="true"
+        />
+
+        <activity android:name="comprovantes.EditAbastecimento"
+            android:finishOnTaskLaunch="true"
+        />
     </application>
 
 </manifest>

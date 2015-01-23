@@ -37,6 +37,7 @@ public class VisualizarKm extends Activity{
     TextView destino;
     TextView veiculo;
     TextView nome;
+    TextView km_atual;
 
 
 
@@ -89,6 +90,7 @@ public class VisualizarKm extends Activity{
         destino.setText(km.getDestino());
         veiculo.setText(km.getVeiculo());
         nome.setText(km.getNome());
+        km_atual.setText(km.getKm(km.getKm_atual()));
 
 
 
@@ -138,9 +140,12 @@ public class VisualizarKm extends Activity{
         String nomeStr;
         String veiculoStr;
         String destinoStr;
+        int kmAtual;
         destino = (TextView) findViewById(R.id.viewVeiculoMarca);
         veiculo = (TextView) findViewById(R.id.viewComprovanteEstabelecimento);
         nome = (TextView) findViewById(R.id.view);
+        km_atual = (TextView) findViewById(R.id.viewKm);
+        kmAtual = km.getKm_atual();
         veiculoStr = km.getVeiculo();
         destinoStr = km.getDestino();
         nomeStr = km.getNome();
@@ -154,6 +159,7 @@ public class VisualizarKm extends Activity{
             }else if( destinoStr.equals("Antonio carlos")){
                 destinoStr = "A.Carlos";
             }
+            km_atual.setText(kmAtual);
             destino.setText(destinoStr);
             veiculo.setText(veiculoStr);
             nome.setText(nomeStr);

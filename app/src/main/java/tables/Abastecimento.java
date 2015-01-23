@@ -10,6 +10,30 @@ public class Abastecimento {
     private double litros;
     private double valor;
     private int id;
+    String veiculo;
+
+    public double toDouble(String valor){
+        double valorDouble = Double.parseDouble(valor);
+        return valorDouble;
+    }
+
+    public String getVeiculo() {
+        return veiculo;
+    }
+
+    public void setVeiculo(String veiculo) {
+        this.veiculo = veiculo;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
+
+    String imagem;
 
     public int getId() {
         return id;
